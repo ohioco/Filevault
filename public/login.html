@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - FileVault</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button class="upload-btn" type="submit">Login</button>
+    </form>
+    <br>
+    <a href="/auth/google"><button class="upload-btn">Login with Google</button></a>
+    <p>Don't have an account? <a href="/register.html">Sign Up</a></p>
+</div>
+
+<script>
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const formData = new FormData(loginForm);
+    const data = {};
+    formData.forEach((v,k)=>data[k]=v);
+    const res = await fetch('/login', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    if(res.ok) window.location.href='/';
+    else alert(result.error);
+});
+</script>
+</body>
+</html>
